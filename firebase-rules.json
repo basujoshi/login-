@@ -1,0 +1,18 @@
+{
+  "rules": {
+    "users": {
+      "$uid": {
+        ".read": "auth != null && (auth.uid === $uid || auth.token.email === 'joshibasu12345@gmail.com')",
+        ".write": "auth != null && (auth.uid === $uid || auth.token.email === 'joshibasu12345@gmail.com')"
+      }
+    },
+    "messages": {
+      "$uid": {
+        ".read": "auth != null && (auth.uid === $uid || auth.token.email === 'joshibasu12345@gmail.com')",
+        "$messageId": {
+          ".write": "auth != null && (auth.uid === $uid || auth.token.email === 'joshibasu12345@gmail.com')"
+        }
+      }
+    }
+  }
+}
