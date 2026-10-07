@@ -1,0 +1,8 @@
+{
+ "rules":{
+  "users":{"$uid":{".read":"auth != null && (auth.uid === $uid || auth.token.email === 'joshibasu12345@gmail.com')",".write":"auth != null && (auth.uid === $uid || auth.token.email === 'joshibasu12345@gmail.com')"}},
+  "messages":{"$uid":{".read":"auth != null && (auth.uid === $uid || auth.token.email === 'joshibasu12345@gmail.com')","$mid":{".write":"auth != null && (auth.uid === $uid || auth.token.email === 'joshibasu12345@gmail.com')"}}},
+  "presence":{"$uid":{".read":"auth != null && (auth.uid === $uid || auth.token.email === 'joshibasu12345@gmail.com')",".write":"auth != null && (auth.uid === $uid || auth.token.email === 'joshibasu12345@gmail.com')"},"admin":{".read":"auth != null",".write":"auth != null && auth.token.email === 'joshibasu12345@gmail.com'"}},
+  "typing":{"$uid":{".read":"auth != null && (auth.uid === $uid || auth.token.email === 'joshibasu12345@gmail.com')","$side":{".write":"auth != null && (auth.uid === $uid || auth.token.email === 'joshibasu12345@gmail.com')"}}}
+ }
+}

@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Customer Support Chat</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#eef3f8;color:#172033}button,input,select{font:inherit}
+button{cursor:pointer}.hidden{display:none!important}.page{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:16px}
+.card{width:min(470px,100%);background:#fff;border-radius:20px;padding:24px;box-shadow:0 10px 35px #0001}.card h1{margin:0 0 7px}.muted{color:#697386;font-size:13px}
+.google{width:100%;border:0;background:#111827;color:#fff;border-radius:11px;padding:13px;margin-top:18px}.google:disabled{opacity:.6}
+.form{display:grid;gap:12px;margin-top:18px}.field label{display:block;font-size:12px;font-weight:700;margin-bottom:5px}.field input,.field select{width:100%;padding:11px;border:1px solid #d6dce7;border-radius:10px;outline:none;background:#fff}
+.submit{width:100%;border:0;background:#2563eb;color:#fff;border-radius:11px;padding:13px}.profile{display:flex;gap:10px;align-items:center;margin-top:14px;padding:10px;background:#f6f8fb;border-radius:12px}.avatar{width:44px;height:44px;border-radius:50%;object-fit:cover;background:#e5e7eb}.mini{font-size:12px;color:#697386}
+.success{padding:12px;border-radius:11px;background:#ecfdf3;color:#147a3d;font-size:13px;margin-bottom:10px}
+.app{height:100vh;max-width:760px;margin:auto;background:#fff;display:flex;flex-direction:column}.top{padding:11px 13px;border-bottom:1px solid #e3e8ef;display:flex;align-items:center;gap:9px}.info{flex:1;min-width:0}.name{font-weight:700}.sub{font-size:12px;color:#697386;margin-top:3px}.online{color:#16a34a}.offline{color:#7b8493}
+.top button,.logout{border:0;border-radius:9px;padding:8px 10px;background:#111827;color:#fff}.profilebar{display:flex;gap:9px;align-items:center;padding:9px 13px;border-bottom:1px solid #edf0f4}.messages{flex:1;overflow:auto;padding:14px;background:#eef3f8}.row{display:flex;gap:7px;margin:7px 0;align-items:flex-end}.mine{justify-content:flex-end}.mine .small{order:2}.small{width:30px;height:30px;border-radius:50%;object-fit:cover;background:#e5e7eb}
+.bubble{max-width:78%;background:#fff;border-radius:15px;padding:9px 11px;box-shadow:0 1px 3px #0001;word-break:break-word}.mine .bubble{background:#dbeafe;border-bottom-right-radius:5px}.row:not(.mine) .bubble{border-bottom-left-radius:5px}.media{max-width:280px;width:100%;display:block;border-radius:10px}.bubble audio{max-width:280px;width:100%}.text{white-space:pre-wrap}.meta{font-size:10px;color:#778294;text-align:right;margin-top:4px}.actions{text-align:right}.actions button{font-size:10px;border:0;background:transparent;color:#2563eb}.actions .del{color:#dc2626}.deleted{font-style:italic;color:#7d8795}.typing{min-height:20px;padding:0 14px;font-size:12px;color:#687486}.quick{display:flex;gap:6px;overflow:auto;padding:3px 8px 8px}.quick button{white-space:nowrap;border:1px solid #d8deea;background:#f7f9fc;border-radius:18px;padding:7px 10px;font-size:12px}.composer{border-top:1px solid #e2e7ef;padding:8px}.compose{display:flex;gap:6px}.compose input{flex:1;border:1px solid #d4dbe5;border-radius:22px;padding:11px 14px}.icon{width:42px;border:0;border-radius:50%;background:#edf1f6}.send{background:#2563eb;color:#fff}.recording{background:#dc2626;color:#fff}
+</style></head><body>
+
+<div id="loginPage" class="page"><div class="card">
+<h1>Customer Support</h1><div class="muted">Login with Google to contact us.</div>
+<button id="googleBtn" class="google">Continue with Google</button>
+</div></div>
+
+<div id="detailsPage" class="page hidden"><div class="card">
+<h1>Your Details</h1><div class="muted">Please fill your details before starting the chat.</div>
+<div class="profile"><img id="gPhoto" class="avatar"><div><b id="gName"></b><div id="gEmail" class="mini"></div></div></div>
+<form id="detailsForm" class="form">
+<div class="field"><label>Name</label><input id="name" required></div>
+<div class="field"><label>Gmail</label><input id="email" type="email" readonly required></div>
+<div class="field"><label>Contact Number</label><input id="contact" type="tel" placeholder="Your contact number" required></div>
+<div class="field"><label>WhatsApp Number</label><input id="whatsapp" type="tel" placeholder="WhatsApp number" required></div>
+<div class="field"><label>Reason</label><select id="reason" required>
+<option value="">Select reason</option>
+<option>Website Developer</option><option>Software Developer</option><option>Shop Website</option>
+<option>Billing Software</option><option>KhataPro Software</option><option>App Development</option>
+<option>Website & App Development</option><option>Business Software</option><option>Other</option>
+</select></div>
+<button class="submit" type="submit">Submit & Start Chat</button>
+</form></div></div>
+
+<div id="app" class="app hidden">
+<div class="top"><img id="adminAvatar" class="avatar"><div class="info"><div class="name">Admin</div><div id="adminStatus" class="sub offline">Offline</div></div><button id="notify">🔔</button><button id="logout">Logout</button></div>
+<div id="success" class="success hidden">✅ Details submitted successfully. You can now message the admin.</div>
+<div class="profilebar"><img id="myAvatar" class="avatar"><div class="info"><b id="myName"></b><div id="myEmail" class="mini"></div></div></div>
+<div id="messages" class="messages"></div><div id="typing" class="typing"></div>
+<div class="composer">
+<div class="quick"><button>Hello 👋</button><button>Hi</button><button>I need help</button><button>Thank you</button><button>Please contact me</button></div>
+<div class="compose"><input id="input" placeholder="Type a message..."><input id="photo" type="file" accept="image/*" hidden><button id="photoBtn" class="icon">📷</button><button id="voiceBtn" class="icon">🎙️</button><button id="send" class="icon send">➤</button></div>
+</div></div>
+
+<script type="module">
+import {auth,db,provider,signInWithPopup,onAuthStateChanged,signOut,ref,update,push,onValue,onDisconnect,serverTimestamp} from "./firebase-config.js";
+const ADMIN="joshibasu12345@gmail.com",$=x=>document.getElementById(x);
+let user=null,msgOff,presOff,typeOff,typingTimer,mediaRecorder,audioChunks=[],ids=new Set(),adminPhoto="";
+const avatar=(u,n="User")=>u||"https://ui-avatars.com/api/?name="+encodeURIComponent(n)+"&background=e5e7eb&color=374151";
+const dataURL=(f,max)=>new Promise((res,rej)=>{if(f.size>max)return rej("size");let r=new FileReader();r.onload=()=>res(r.result);r.onerror=rej;r.readAsDataURL(f)});
+const notify=(t,b)=>{if(document.hidden&&"Notification"in window&&Notification.permission==="granted")new Notification(t,{body:b})};
+function presence(){let p=ref(db,"presence/"+user.uid);update(p,{online:true,lastSeen:serverTimestamp(),photo:user.photoURL||"",name:user.displayName||""});onDisconnect(p).update({online:false,lastSeen:serverTimestamp()})}
+function listen(){
+msgOff?.();ids=new Set();msgOff=onValue(ref(db,"messages/"+user.uid),s=>{
+ let d=s.val()||{},a=Object.entries(d).map(([id,m])=>({...m,id}));
+ a.forEach(m=>{if(!ids.has(m.id)&&m.senderRole==="admin")notify("New message from Admin",m.type==="text"?m.text:"New "+m.type+" message")});
+ ids=new Set(a.map(m=>m.id));let u={};a.forEach(m=>{if(m.senderRole==="admin"&&!m.seenByCustomer)u[m.id+"/seenByCustomer"]=true;if(m.senderPhoto&&m.senderRole==="admin")adminPhoto=m.senderPhoto});if(Object.keys(u).length)update(ref(db,"messages/"+user.uid),u);render(d)
+});
+presOff?.();presOff=onValue(ref(db,"presence/admin"),s=>{let p=s.val();$("adminStatus").textContent=p?.online?"Online":"Offline";$("adminStatus").className="sub "+(p?.online?"online":"offline");if(p?.photo){adminPhoto=p.photo;$("adminAvatar").src=p.photo}});
+typeOff?.();typeOff=onValue(ref(db,"typing/"+user.uid+"/admin"),s=>$("typing").textContent=s.val()?.typing?"Admin is typing…":"");
+}
+function render(d){let b=$("messages");b.innerHTML="";Object.entries(d).map(([id,m])=>({...m,id})).sort((a,b)=>(a.timestamp||0)-(b.timestamp||0)).forEach(m=>{
+ let row=document.createElement("div");row.className="row "+(m.senderRole==="customer"?"mine":"");let im=document.createElement("img");im.className="small";im.src=avatar(m.senderPhoto||(m.senderRole==="customer"?user.photoURL:adminPhoto),m.senderRole==="customer"?user.displayName:"Admin");let bb=document.createElement("div");bb.className="bubble";
+ if(m.deleted)bb.innerHTML='<div class="deleted">This message was deleted</div>';else if(m.type==="image"){let x=document.createElement("img");x.className="media";x.src=m.data;bb.append(x)}else if(m.type==="voice"){let x=document.createElement("audio");x.controls=true;x.src=m.data;bb.append(x)}else{let x=document.createElement("div");x.className="text";x.textContent=m.text||"";bb.append(x)}
+ let meta=document.createElement("div");meta.className="meta";meta.textContent=(m.senderRole==="customer"?"You":"Admin")+(m.edited?" · Edited":"")+(m.senderRole==="customer"?" · "+(m.seenByAdmin?"Read":"Sent"):"");bb.append(meta);
+ if(m.senderRole==="customer"&&!m.deleted&&m.timestamp&&Date.now()-m.timestamp<60000){let ac=document.createElement("div");ac.className="actions";if(m.type==="text"){let e=document.createElement("button");e.textContent="Edit";e.onclick=async()=>{let v=prompt("Edit message:",m.text||"");if(v?.trim())await update(ref(db,"messages/"+user.uid+"/"+m.id),{text:v.trim(),edited:true})};ac.append(e)}let q=document.createElement("button");q.textContent="Delete";q.className="del";q.onclick=async()=>{if(confirm("Delete this message?"))await update(ref(db,"messages/"+user.uid+"/"+m.id),{deleted:true,text:"",data:""})};ac.append(q);bb.append(ac)}
+ row.append(im,bb);b.append(row)});b.scrollTop=b.scrollHeight}
+async function send(t){t=t?.trim();if(!t)return;await push(ref(db,"messages/"+user.uid),{senderUid:user.uid,senderEmail:user.email,senderName:user.displayName||"",senderPhoto:user.photoURL||"",senderRole:"customer",type:"text",text:t,timestamp:serverTimestamp(),seenByAdmin:false,seenByCustomer:false})}
+$("googleBtn").onclick=async()=>{try{await signInWithPopup(auth,provider)}catch(e){alert(e.message)}};
+$("detailsForm").onsubmit=async e=>{e.preventDefault();let details={name:$("name").value.trim(),email:$("email").value.trim(),contact:$("contact").value.trim(),whatsapp:$("whatsapp").value.trim(),reason:$("reason").value,photo:user.photoURL||"",uid:user.uid,submittedAt:serverTimestamp(),lastLoginAt:serverTimestamp(),loggedIn:true};await update(ref(db,"users/"+user.uid),details);$("detailsPage").classList.add("hidden");$("app").classList.remove("hidden");$("success").classList.remove("hidden");setTimeout(()=>$("success").classList.add("hidden"),5000);presence();listen()};
+$("logout").onclick=()=>signOut(auth);$("notify").onclick=async()=>{if("Notification"in window)await Notification.requestPermission()};$("send").onclick=()=>{$("input").value&&send($("input").value);$("input").value=""};
+$("input").oninput=()=>{update(ref(db,"typing/"+user.uid+"/customer"),{typing:true,at:serverTimestamp()});clearTimeout(typingTimer);typingTimer=setTimeout(()=>update(ref(db,"typing/"+user.uid+"/customer"),{typing:false}),900)};
+$("input").onkeydown=e=>{if(e.key==="Enter"){e.preventDefault();$("send").click()}};document.querySelectorAll(".quick button").forEach(b=>b.onclick=()=>send(b.textContent));
+$("photoBtn").onclick=()=>$("photo").click();$("photo").onchange=async e=>{let f=e.target.files[0];if(!f)return;if(f.size>700*1024)return alert("Photo maximum 700KB.");try{let data=await dataURL(f,700*1024);await push(ref(db,"messages/"+user.uid),{senderUid:user.uid,senderEmail:user.email,senderName:user.displayName||"",senderPhoto:user.photoURL||"",senderRole:"customer",type:"image",data,timestamp:serverTimestamp(),seenByAdmin:false,seenByCustomer:false})}catch(_){alert("Photo could not be saved.")}e.target.value=""};
+$("voiceBtn").onclick=async()=>{if(mediaRecorder?.state==="recording"){mediaRecorder.stop();$("voiceBtn").textContent="🎙️";return}try{let stream=await navigator.mediaDevices.getUserMedia({audio:true});audioChunks=[];mediaRecorder=new MediaRecorder(stream);mediaRecorder.ondataavailable=e=>audioChunks.push(e.data);mediaRecorder.onstop=async()=>{stream.getTracks().forEach(t=>t.stop());let blob=new Blob(audioChunks,{type:"audio/webm"});if(blob.size>450*1024)return alert("Voice is too large. Record a shorter voice.");let data=await dataURL(blob,450*1024);await push(ref(db,"messages/"+user.uid),{senderUid:user.uid,senderEmail:user.email,senderName:user.displayName||"",senderPhoto:user.photoURL||"",senderRole:"customer",type:"voice",data,timestamp:serverTimestamp(),seenByAdmin:false,seenByCustomer:false})};mediaRecorder.start();$("voiceBtn").textContent="⏹️"}catch(e){alert("Microphone permission is required.")}};
+onAuthStateChanged(auth,async u=>{if(!u){user=null;$("loginPage").classList.remove("hidden");$("detailsPage").classList.add("hidden");$("app").classList.add("hidden");return}user=u;$("loginPage").classList.add("hidden");$("gPhoto").src=avatar(u.photoURL,u.displayName);$("gName").textContent=u.displayName||"Google User";$("gEmail").textContent=u.email||"";$("name").value=u.displayName||"";$("email").value=u.email||"";$("myAvatar").src=avatar(u.photoURL,u.displayName);$("myName").textContent=u.displayName||"";$("myEmail").textContent=u.email||"";onValue(ref(db,"users/"+u.uid),s=>{let d=s.val();if(d?.contact&&d?.whatsapp&&d?.reason){$("detailsPage").classList.add("hidden");$("app").classList.remove("hidden");presence();listen()}else $("detailsPage").classList.remove("hidden")},{onlyOnce:true});if("Notification"in window&&Notification.permission==="default")Notification.requestPermission()});
+</script></body></html>
